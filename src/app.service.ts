@@ -1,18 +1,19 @@
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Injectable, } from '@nestjs/common';
+import { LoggerService } from './core/logger/logger.service';
+// import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AppService {
-  constructor(private readonly configService: ConfigService){}
+  private context = 'AppService'
+  // constructor(private readonly configService: ConfigService){}
+  constructor(private readonly logger: LoggerService) { }
+  // constructor(){}
   getHello() {
-    const environmentVariable = this.configService.get<string>(`redis.host`)
-    console.log(environmentVariable);
-    
-    return {
-      data: 'Hello World!',
-      meta:{
-        pages: 10
-      }
-    };
+    this.logger.log('xxxx', this.context, {
+      userId: 123,
+      isPremium: true
+    })
+    // throw new Error('bad req')
+    return 'Hello World!'
   }
 }

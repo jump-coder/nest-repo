@@ -10,7 +10,7 @@ export class TransformResponseInterceptor implements NestInterceptor {
     return next.handle().pipe(map(response=>{
       if(!response){
         return {
-          data: []
+          data: {}
         }
       }
       if(response.data && response.meta){
