@@ -1,12 +1,15 @@
 // 全局模块
 import { Global, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import config from '../config';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformResponseInterceptor } from './interceptors/transform-response/transform-response.interceptor';
 import { LoggerService } from './logger/logger.service';
 import { LoggerMiddleware } from './middleware/logger/logger.middleware';
 import { DataBaseService } from 'src/database/database.service';
+import { CacheModule } from '@nestjs/cache-manager';
+import { redisStore } from 'cache-manager-redis-store';
+import { CacheService } from './cache/cache.service';
 
 @Global()
 @Module({
@@ -15,6 +18,23 @@ import { DataBaseService } from 'src/database/database.service';
             isGlobal: true, // 确保 ConfigService 在整个应用中可用，无需在其他模块重复导入 ConfigModule。
             load: [config],
         }), // 用于加载和管理应用程序配置的核心方法。它允许你从各种来源（如 .env 文件、YAML 文件或自定义配置对象）读取配置变量，并在整个应用程序中注入这些配置
+        CacheModule.registerAsync({
+            imports: [ConfigModule],
+            useFactory: async (config: ConfigService) => {
+                const username = config.get('redis.username')
+                const password = config.get('redis.password')
+                return {
+                    store: redisStore,
+                    host: config.get('redis.host'),
+                    port: config.get('redis.port'),
+                    ...(username && { username }),
+                    ...(password && { password }),
+                    ttl: 10,
+                    no_ready_check: true
+                }
+            },
+            inject: [ConfigService]
+        })
     ],
     providers: [
         {
@@ -22,9 +42,14 @@ import { DataBaseService } from 'src/database/database.service';
             useClass: TransformResponseInterceptor, // 指定具体的拦截器类（TransformResponseInterceptor），表示用这个类来实现全局拦截逻辑。
         },
         LoggerService,
-        DataBaseService
+        DataBaseService,
+        CacheService
+        // {
+        //     provide: APP_INTERCEPTOR,
+        //     useClass: CacheInterceptor
+        // }
     ],
-    exports: [LoggerService, DataBaseService]
+    exports: [LoggerService, DataBaseService, CacheService]
 })
 export class CoreModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
