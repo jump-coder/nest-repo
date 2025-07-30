@@ -6,6 +6,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformResponseInterceptor } from './interceptors/transform-response/transform-response.interceptor';
 import { LoggerService } from './logger/logger.service';
 import { LoggerMiddleware } from './middleware/logger/logger.middleware';
+import { DataBaseService } from 'src/database/database.service';
 
 @Global()
 @Module({
@@ -20,9 +21,10 @@ import { LoggerMiddleware } from './middleware/logger/logger.middleware';
             provide: APP_INTERCEPTOR, // NestJS 提供的内置令牌（token），用于标识全局拦截器。当使用这个令牌时，Nest 会将对应的拦截器应用到整个应用的所有路由上。
             useClass: TransformResponseInterceptor, // 指定具体的拦截器类（TransformResponseInterceptor），表示用这个类来实现全局拦截逻辑。
         },
-        LoggerService
+        LoggerService,
+        DataBaseService
     ],
-    exports: [LoggerService]
+    exports: [LoggerService, DataBaseService]
 })
 export class CoreModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
