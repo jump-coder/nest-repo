@@ -5,7 +5,7 @@ services:
     container_name: nestjs_starter_test_postgres # (容器名称)
     restart: always # (崩溃时重启服务)
     env_file:
-      - .env
+      - .env.test
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
