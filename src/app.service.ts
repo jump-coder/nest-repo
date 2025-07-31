@@ -17,8 +17,6 @@ export class AppService {
   // constructor(){}
   async getHello() {
     this.logger.log('xxx', this.context, { userId: 123, isPremium: true })
-    console.log('test');
-
     this.databaseService.user.findMany()
     await this.cacheService.set('key', 'Hello World!', 1000)
     const valueFromCache = await this.cacheService.get('key')
