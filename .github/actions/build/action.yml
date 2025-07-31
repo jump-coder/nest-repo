@@ -4,13 +4,13 @@ runs:
   using: 'composite'
   steps:
     - name: Check out source code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: Install Node.jobs
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
     - name: Set up pnpm
       uses: pnpm/action-setup@v2
       with:
         version: latest
     - name: Install dependencies
-      shell: branches
+      shell: bash
       run: pnpm Install
