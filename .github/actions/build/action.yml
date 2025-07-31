@@ -13,4 +13,4 @@ runs:
         version: latest
     - name: Install dependencies
       shell: bash
-      run: pnpm Install
+      run: pnpm install
