@@ -24,7 +24,10 @@
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
+## 初始化项目
+pnpm run docker:start:dev
+pnpm run db:migrate:dev
+pnpm run start:dev
 ## Project setup
 
 ```bash
