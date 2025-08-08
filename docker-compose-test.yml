@@ -1,8 +1,8 @@
 # version: '3.8' # docker compose v2开始不需要该字段，该字段会被认为冗余配置，会出现警告
 services:
-  nestjs-url_test_postgres: # Needs updating (服务名称)
+  nestjs-repo_test_postgres: # Needs updating (服务名称)
     image: postgres:alpine # (镜像)
-    container_name: nestjs-url_test_postgres # (容器名称)
+    container_name: nestjs-repo_test_postgres # (容器名称)
     restart: always # (崩溃时重启服务)
     env_file:
       - .env.test
@@ -12,20 +12,20 @@ services:
     ports:
       - '5444:5432'
     volumes:
-      - nestjs-url_test_postgres_data:/var/lib/postgresql/data # Needs updating
+      - nestjs-repo_test_postgres_data:/var/lib/postgresql/data # Needs updating
 
-  nestjs-url_test_redis: # Needs updating
+  nestjs-repo_test_redis: # Needs updating
     image: redis:alpine
-    container_name: nestjs-url_test_redis # Needs updating
+    container_name: nestjs-repo_test_redis # Needs updating
     ports:
       - '6380:6379'
     volumes:
-      - nestjs-url_test_redis_data:/data # Needs updating
+      - nestjs-repo_test_redis_data:/data # Needs updating
 
 networks:
   default:
-    name: nestjs-url # Needs updating
+    name: nestjs-repo # Needs updating
 
 volumes:
-  nestjs-url_test_postgres_data: # Need updating
-  nestjs-url_test_redis_data: # Need updating
+  nestjs-repo_test_postgres_data: # Need updating
+  nestjs-repo_test_redis_data: # Need updating
